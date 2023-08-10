@@ -1,5 +1,5 @@
 "use client";
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -31,11 +31,27 @@ interface Props {
 }
 
 const AccountProfile = ({ user, btnTitle }: Props) => {
+  const [files, setFiles] = useState<File[]>([]);
   const handleImage = (
-    e: ChangeEvent,
+    e: ChangeEvent<HTMLInputElement>,
     fieldChange: (value: string) => void
   ) => {
     e.preventDefault();
+    const fileReader = new FileReader();
+
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];        
+      
+      if (!file.type.includes("image")) return;
+
+      setFiles(Array.from(e.target.files));
+      
+      fileReader.onload = async (e) => {
+        const imageDataUrl = e.target?.result?.toString() || ''
+        fieldChange(imageDataUrl);
+      }
+      fileReader.readAsDataURL(file);
+    }
   };
   const onSubmit = (values: z.infer<typeof userSchema>) => {
     console.log(values);
@@ -43,10 +59,10 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
   const form = useForm({
     resolver: zodResolver(userSchema),
     defaultValues: {
-      profile_photo: "",
-      name: "",
-      username: "",
-      bio: "",
+      profile_photo: user?.image || "",
+      name: user?.name || "",
+      username: user?.username || "",
+      bio: user?.bio || "",
     },
   });
   return (
@@ -94,7 +110,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
           control={form.control}
           name="name"
           render={({ field }) => (
-            <FormItem className="flex items-center gap-3">
+            <FormItem className="flex flex-col">
               <FormLabel className="account-form_label">name</FormLabel>
 
               <FormControl className="flex-1 text-base-semibold text-gray-200">
@@ -111,7 +127,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
           control={form.control}
           name="username"
           render={({ field }) => (
-            <FormItem className="flex items-center gap-3">
+            <FormItem className="flex flex-col">
               <FormLabel className="account-form_label">username</FormLabel>
 
               <FormControl className="flex-1 text-base-semibold text-gray-200">
@@ -128,7 +144,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
           control={form.control}
           name="bio"
           render={({ field }) => (
-            <FormItem className="flex items-center gap-3">
+            <FormItem className="flex flex-col">
               <FormLabel className="account-form_label">bio</FormLabel>
 
               <FormControl className="flex-1 text-base-semibold text-gray-200">
@@ -141,7 +157,9 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="bg-primary-500">Submit</Button>
+        <Button type="submit" className="bg-primary-500">
+          Submit
+        </Button>
       </form>
     </Form>
   );
