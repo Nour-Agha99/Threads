@@ -2,7 +2,10 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Inter } from "next/font/google";
 
 import "../globals.css";
-import { BottomBar, TopBar, LeftBar, RightBar } from "@/components";
+import TopBar from "@/components/shared/TopBar";
+import LeftBar from "@/components/shared/LeftBar";
+import RightBar from "@/components/shared/RightBar";
+import BottomBar from "@/components/shared/BottomBar";
 
 export const metadata = {
   title: "Threads",

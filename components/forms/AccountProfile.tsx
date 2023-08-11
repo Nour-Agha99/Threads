@@ -17,6 +17,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Image from "next/image";
 import { Textarea } from "@/components/ui/textarea";
+import { isBase64Image } from "@/lib/utils";
+import { useUploadThing } from "@/lib/uploadThing";
+import { updateUser } from "@/lib/actions/user.actions";
+import { usePathname, useRouter } from "next/navigation";
 
 interface Props {
   user: {
@@ -32,6 +36,10 @@ interface Props {
 
 const AccountProfile = ({ user, btnTitle }: Props) => {
   const [files, setFiles] = useState<File[]>([]);
+  const { startUpload } = useUploadThing("media");
+  const router = useRouter();
+  const pathName = usePathname();
+
   const handleImage = (
     e: ChangeEvent<HTMLInputElement>,
     fieldChange: (value: string) => void
@@ -40,21 +48,45 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
     const fileReader = new FileReader();
 
     if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];        
-      
+      const file = e.target.files[0];
+
       if (!file.type.includes("image")) return;
 
       setFiles(Array.from(e.target.files));
-      
+
       fileReader.onload = async (e) => {
-        const imageDataUrl = e.target?.result?.toString() || ''
+        const imageDataUrl = e.target?.result?.toString() || "";
         fieldChange(imageDataUrl);
-      }
+      };
       fileReader.readAsDataURL(file);
     }
   };
-  const onSubmit = (values: z.infer<typeof userSchema>) => {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof userSchema>) => {
+    const blob = values.profile_photo;
+    const hasImageChanged = isBase64Image(blob);
+    if (hasImageChanged) {
+      const imgRes = await startUpload(files);
+
+      if (imgRes && imgRes[0].fileUrl) {
+        console.log(imgRes[0].fileUrl);
+        values.profile_photo = imgRes[0].fileUrl;
+      }
+    }
+
+    await updateUser({
+      username: values.username,
+      name: values.name,
+      bio: values.bio,
+      image: values.profile_photo,
+      userId: user.id,
+      path:pathName,
+    });
+
+    if(pathName === '/profile/edit'){
+      router.back();
+    }else{
+      router.push('/');
+    }
   };
   const form = useForm({
     resolver: zodResolver(userSchema),
