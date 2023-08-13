@@ -8,7 +8,6 @@ const page = async () => {
   const user = await currentUser();
   if (!user) return null;
   const userInfo = await fetchUser(user.id);
-console.log(userInfo);
 
   if (!userInfo || !userInfo.onboarded) {
     redirect("/onboarding");

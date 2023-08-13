@@ -68,20 +68,19 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
       const imgRes = await startUpload(files);
 
       if (imgRes && imgRes[0].fileUrl) {
-        console.log(imgRes[0].fileUrl);
         values.profile_photo = imgRes[0].fileUrl;
       }
     }
 
-    await updateUser({
+    const a = await updateUser({
       username: values.username,
       name: values.name,
       bio: values.bio,
       image: values.profile_photo,
       userId: user.id,
-      path:pathName,
+      path: pathName,
     });
-
+    
     if(pathName === '/profile/edit'){
       router.back();
     }else{
