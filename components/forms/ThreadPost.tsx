@@ -41,6 +41,7 @@ const ThreadPost = ({ userId }: { userId: string }) => {
   const pathName = usePathname();
 
   const onSubmit = async (values: z.infer<typeof threadSchema>) => {
+     
     await createThread({
       text: values.thread,
       author: userId,

@@ -16,9 +16,8 @@ export const createThread = async ({
   communityId,
   path,
 }: Params): Promise<void> => {
-  try {
+  try {`                                                                                                                    `
     connectToDB();
-
     const createThread = await Thread.create({
       text,
       author,

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import User from "../models/user.models";
 import { connectToDB } from "../mongoose";
+import Thread from "../models/post.models";
 interface Params {
   userId: string;
   username: string;
@@ -48,3 +49,29 @@ export const fetchUser = async (
     console.log("Failed to create/update user");
   }
 }
+
+export const fetchUserPosts = async (
+  userId:string
+) => {
+  try {
+    connectToDB();
+
+     const result = await User.findOne({ id: userId }).populate({
+      path:'threads',
+      model: Thread,
+      populate:{
+        path:'children',
+        model:Thread,
+        populate:{
+          path:'author',
+          model:User,
+          select:'name image id'
+        }
+      }
+    });
+    return result;
+
+  } catch (err) {
+    console.log("Failed to fetch user");
+  }
+} 
