@@ -7,13 +7,11 @@ import Thread from "../models/post.models";
 interface Params {
   text: string;
   author: string;
-  communityId: string | null;
   path: string;
 }
 export const createThread = async ({
   text,
   author,
-  communityId,
   path,
 }: Params): Promise<void> => {
   try {`                                                                                                                    `
@@ -21,7 +19,6 @@ export const createThread = async ({
     const createThread = await Thread.create({
       text,
       author,
-      community: null,
     });
 
     await User.findByIdAndUpdate(author, {

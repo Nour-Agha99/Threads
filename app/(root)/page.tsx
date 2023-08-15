@@ -1,4 +1,4 @@
-import Thread from "@/components/cards/Thread";
+import ThreadCard from "@/components/cards/ThreadCard";
 import { fetchPosts } from "@/lib/actions/post.actions";
 import { UserButton, currentUser } from "@clerk/nextjs";
 
@@ -14,14 +14,13 @@ const Home = async () => {
           <p>shit</p>
         ) : (
           data.posts.map((post) => (
-            <Thread
+            <ThreadCard
               key={post._id}
               id={post._id}
               currentUserId={user?.id}
               parentId={post?.parentId}
               author={post.author}
               content={post.text}
-              community={post.community}
               createdAt={post.createAt}
               comments={post.children}
             />

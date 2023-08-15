@@ -7,11 +7,10 @@ const userSchema = new mongoose.Schema({
   image: String,
   bio: String,
   threads: [{ type: mongoose.Schema.Types.ObjectId, ref: "Thread" }],
-  onboarded: {
+  onboard: {
     type: Boolean,
     default: false,
   },
-  communities: [{ type: mongoose.Schema.Types.ObjectId, ref: "community" }],
 });
 
 const User = mongoose.models.User || mongoose.model("User", userSchema);

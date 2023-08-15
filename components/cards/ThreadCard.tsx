@@ -13,11 +13,6 @@ interface params {
     id: string;
   };
   content: string;
-  community: {
-    name: string;
-    image: string;
-    id: string;
-  } | null;
   createdAt: string;
   comments: {
     author: {
@@ -26,13 +21,12 @@ interface params {
   }[];
   isComment?: boolean;
 }
-const Thread = ({
+const ThreadCard = ({
   key,
   id,
   currentUserId,
   author,
   content,
-  community,
   createdAt,
   comments,
   isComment,
@@ -64,7 +58,7 @@ const Thread = ({
               </h4>
             </Link>
             <p className="mt-6 text-small-regular text-light-2">{content}</p>
-            <div className="mt-5 flex flex-col gap-3">
+            <div className={` ${ isComment && 'mb-10'} mt-5 flex flex-col gap-3`} >
               <div className="flex gap-3.5">
                 <Image
                   src="/heart-gray.svg"
@@ -112,4 +106,4 @@ const Thread = ({
   );
 };
 
-export default Thread;
+export default ThreadCard;

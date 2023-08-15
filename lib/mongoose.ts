@@ -5,7 +5,7 @@ let isConnect = false;
 export const connectToDB = async () => {
   mongoose.set("strictQuery", true);
 
-  if (!process.env.MONGOOSE)
+  if (!process.env.MONGOOSE_URL)
     return console.log("your lose mind, URL not found");
   if (isConnect) return console.log("Funny, you already connected to mongoose");
 

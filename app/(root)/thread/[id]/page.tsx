@@ -1,4 +1,4 @@
-import Thread from "@/components/cards/Thread";
+import ThreadCard from "@/components/cards/ThreadCard";
 import Comment from "@/components/forms/Comment";
 import { fetchPost } from "@/lib/actions/post.actions";
 import { fetchUser } from "@/lib/actions/user.actions";
@@ -12,7 +12,7 @@ const page = async ({ params }: { params: { id: string } }) => {
   if (!user) return null;
   const userInfo = await fetchUser(user.id);
 
-  if (!userInfo || !userInfo.onboarded) {
+  if (!userInfo || !userInfo.onboard) {
     redirect("/onboarding");
   }
   const post = await fetchPost(params.id);
@@ -20,14 +20,13 @@ const page = async ({ params }: { params: { id: string } }) => {
   return (
     <section className="relative">
       <div>
-        <Thread
+        <ThreadCard
           key={post._id}
           id={post._id}
           currentUserId={user?.id}
           parentId={post?.parentId}
           author={post.author}
           content={post.text}
-          community={post.community}
           createdAt={post.createAt}
           comments={post.children}
         />
@@ -39,19 +38,18 @@ const page = async ({ params }: { params: { id: string } }) => {
           currentUserId={JSON.stringify(userInfo?._id)}
         />
         <div className="mt-10">
-          {post.children.map((comment:any)=>(
-            <Thread
-            key={comment._id}
-            id={comment._id}
-            currentUserId={comment?.id}
-            parentId={comment?.parentId}
-            author={comment.author}
-            content={comment.text}
-            community={comment.community}
-            createdAt={comment.createAt}
-            comments={comment.children}
-            isComment={true}
-          />
+          {post.children.map((comment: any) => (
+            <ThreadCard
+              key={comment._id}
+              id={comment._id}
+              currentUserId={comment?.id}
+              parentId={comment?.parentId}
+              author={comment.author}
+              content={comment.text}
+              createdAt={comment.createAt}
+              comments={comment.children}
+              isComment={true}
+            />
           ))}
         </div>
       </div>
