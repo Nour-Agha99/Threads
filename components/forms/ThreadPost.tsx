@@ -37,6 +37,8 @@ interface Props {
 }
 
 const ThreadPost = ({ userId }: { userId: string }) => {
+  console.log(userId);
+  
   const router = useRouter();
   const pathName = usePathname();
 

@@ -8,8 +8,6 @@ const page = async ({ query }: { query: { pageNumber: string } }) => {
   if (!user) return null;
   const userInfo = await fetchUser(user.id);
 
-  console.log(userInfo);
-
   if (!userInfo || !userInfo.onboard) {
     redirect("/onboarding");
   }
@@ -19,8 +17,6 @@ const page = async ({ query }: { query: { pageNumber: string } }) => {
     pageSize: 25,
     searchString: "",
   });
-
-  console.log(data);
   
   return (
     <section className="text-light-1">

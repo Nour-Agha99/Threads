@@ -12,6 +12,9 @@
   .head-text {
     @apply text-heading2-bold text-light-1;
   }
+  .head-text1 {
+    @apply text-heading3-bold text-light-1;
+  }
 
   /* Activity */
   .activity-card {
@@ -152,4 +155,13 @@
 
 .comment-form_btn {
   @apply rounded-3xl bg-primary-500 px-8 py-2 !text-small-regular text-light-1 max-xs:w-full !important;
+}
+.ant-dropdown-menu-title-content {
+  @apply px-8 py-2 !text-small-regular text-light-1 !important;
+}
+.ant-dropdown-menu {
+  @apply  bg-dark-3 border-light-2 !important;
+}
+.ant-dropdown {
+  @apply  bg-dark-3 border-light-3 rounded !important;
 }

@@ -1,11 +1,26 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { dark } from "@clerk/themes";
-import { SignedIn, SignOutButton, OrganizationSwitcher } from "@clerk/nextjs";
+import {
+  SignedIn,
+  SignOutButton,
+  OrganizationSwitcher,
+  currentUser,
+} from "@clerk/nextjs";
+import PersonalProfile from "./PersonalProfile";
+import { fetchUser } from "@/lib/actions/user.actions";
+import { redirect } from "next/navigation";
 
-const TopBar = () => {
-  const isUserLoggedIn = true;
+
+const TopBar = async() => {
+  const user = await currentUser();
+  if (!user) return null;
+  const userInfo = await fetchUser(user.id);
+
+  if (!userInfo || !userInfo.onboard) {
+    redirect("/onboarding");
+  }
+
   return (
     <nav className="topbar" style={{ height: "72px" }}>
       <Link href="/" className="flex items-center gap-4">
@@ -23,14 +38,7 @@ const TopBar = () => {
           </SignedIn>
         </div>
         <div>
-          <OrganizationSwitcher
-            appearance={{
-              baseTheme: dark,
-              elements: {
-                organizationSwitcherTrigger: "py-2 px-3",
-              },
-            }}
-          />
+          <PersonalProfile name={userInfo.name}/>
         </div>
       </div>
     </nav>

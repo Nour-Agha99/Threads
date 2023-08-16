@@ -15,7 +15,6 @@ const Home = async () => {
         ) : (
           data.posts.map((post) => (
             <ThreadCard
-              key={post._id}
               id={post._id}
               currentUserId={user?.id}
               parentId={post?.parentId}

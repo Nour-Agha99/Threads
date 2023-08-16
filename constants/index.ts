@@ -20,6 +20,11 @@ export const sidebarLinks = [
       label: "Create Thread",
     },
     {
+      imgURL: "/setting.svg",
+      route: "/setting",
+      label: "Setting",
+    },
+    {
       imgURL: "/user.svg",
       route: "/profile",
       label: "Profile",

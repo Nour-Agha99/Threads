@@ -21,7 +21,7 @@ const UserCard = ({ id, name, username, imageUrl, personType }:Params) => {
         alt={name}
         width={48}
         height={48}
-        className="rounded-full" 
+        className="aspect-square bg-blue-500 rounded-full" 
         />
         <div className="flex-1 text-ellipsis">
             <h4 className="text-base-semibold text-light-1">{name}</h4>

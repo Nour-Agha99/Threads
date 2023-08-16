@@ -21,20 +21,18 @@ import { isBase64Image } from "@/lib/utils";
 import { useUploadThing } from "@/lib/uploadThing";
 import { updateUser } from "@/lib/actions/user.actions";
 import { usePathname, useRouter } from "next/navigation";
+import { clerkClient, useUser } from "@clerk/nextjs";
 
 interface Props {
-  user: {
-    id: string;
-    object_id: string;
-    username: string;
-    name: string;
-    bio: string;
-    image: string;
-  };
-  btnTitle: string;
+  id: string | undefined;
+  object_id: string;
+  username: string | null | undefined;
+  name: string;
+  bio: string;
+  image: string | undefined;
 }
 
-const AccountProfile = ({ user, btnTitle }: Props) => {
+const AccountProfile = ({ user }: { user: Props }) => {
   const [files, setFiles] = useState<File[]>([]);
   const { startUpload } = useUploadThing("media");
   const router = useRouter();
@@ -72,7 +70,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
       }
     }
 
-    const a = await updateUser({
+    await updateUser({
       username: values.username,
       name: values.name,
       bio: values.bio,
@@ -80,11 +78,11 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
       userId: user.id,
       path: pathName,
     });
-    
-    if(pathName === '/profile/edit'){
+
+    if (pathName === "/profile/edit") {
       router.back();
-    }else{
-      router.push('/');
+    } else {
+      router.push("/");
     }
   };
   const form = useForm({

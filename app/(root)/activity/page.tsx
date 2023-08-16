@@ -16,7 +16,6 @@ const page = async () => {
 
   const activity = await getActivity(userInfo._id);
 
-  console.log(activity);
 
   return (
     <section className="text-light-1">

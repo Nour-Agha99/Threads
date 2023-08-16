@@ -6,7 +6,7 @@ import { connectToDB } from "../mongoose";
 import Thread from "../models/post.models";
 import mongoose, { FilterQuery, SortOrder } from "mongoose";
 interface Params {
-  userId: string;
+  userId: string | undefined;
   username: string;
   name: string;
   image: string;
