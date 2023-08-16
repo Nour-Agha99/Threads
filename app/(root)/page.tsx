@@ -1,10 +1,15 @@
 import ThreadCard from "@/components/cards/ThreadCard";
 import { fetchPosts } from "@/lib/actions/post.actions";
 import { UserButton, currentUser } from "@clerk/nextjs";
+import { redirect } from "next/navigation";
 
 const Home = async () => {
   const data = await fetchPosts(1, 20);
   const user = await currentUser();
+
+  if (!user?.id) {
+    redirect("/sign-in");
+  }
 
   return (
     <>
